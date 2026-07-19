@@ -11,16 +11,15 @@ isolated VMs on a single physical machine.
 
 ## Design decisions
 - **Proxmox over a Windows host:** ~1–2 GB hypervisor overhead vs 4 GB+
-  for a desktop OS — on a 16 GB box, RAM is the binding constraint, so
-  every VM gets more headroom. Type-1 virtualization is also the standard
-  for this kind of infrastructure.
+  for a desktop OS — on a 16 GB box, RAM is the binding constraint.
+  Type-1 virtualization is also the standard   for this kind of infrastructure.
 - **Sequential, not concurrent, workloads:** at 16 GB the lab runs its
   components in stages (SIEM first, attacker and victim VMs added as
   needed) rather than all at once — a deliberate resource-planning
   tradeoff, documented rather than discovered.
 
 ## First VM: Wazuh manager
-- Ubuntu Server 24.04 LTS — 6 GB RAM, 2 vCPU, 50 GB disk
+- Ubuntu Server 26.04 LTS — 6 GB RAM, 2 vCPU, 64 GB disk
 - Full VM (not LXC) to avoid OpenSearch container issues
 - Snapshotted immediately post-install for fast rollback
 
