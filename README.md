@@ -2,7 +2,7 @@
 
 Tulsa, OK. Hands-on IT and security work built and documented in a self-hosted homelab. I run production Linux/VPS/DNS infrastructure and am building out a SOC-style detection and forensics lab, documented here project by project.
 
-**Certifications:** CompTIA Security+ (SY0-701) · CompTIA A+ · CHSOS
+**Certifications:** CompTIA Security+ · CompTIA A+
 
 ## Projects
 
