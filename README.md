@@ -14,4 +14,4 @@ Tulsa, OK. Hands-on IT and security work built and documented in a self-hosted h
 | DFIR Case Studies | Memory & disk forensics, investigation methodology | 📋 Planned |
 | TryHackMe SOC Level 1 | Structured hands-on SOC analyst training | 📋 Planned |
 
-_Contact: [LinkedIn](your-linkedin-url) · [email]_
+_Contact: [LinkedIn]((https://www.linkedin.com/in/derek-tarvin/)) 
