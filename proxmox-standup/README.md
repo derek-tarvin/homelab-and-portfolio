@@ -1,1 +1,2 @@
-
+Setting up the stuff... 
+and doing the stuff
