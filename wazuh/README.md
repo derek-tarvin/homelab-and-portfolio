@@ -11,7 +11,7 @@ public internet.
 
 Stand up a working SIEM and get genuine telemetry flowing into it from a
 production host — not a lab victim VM, but an actual internet-facing server I
-already operate. The design goal was to do this *without* exposing the SIEM's
+already operate. The design goal was to do this _without_ exposing the SIEM's
 management surface to the internet, which ruled out the simplest approach
 (port-forwarding the manager) from the start.
 
@@ -48,7 +48,7 @@ Rather than expose the manager, the agent reaches it through a WireGuard overlay
 **No inbound exposure of the SIEM.** The manager sits behind home NAT and can't
 accept inbound connections — which is exactly the property I wanted. Instead of
 forwarding the manager's ports to the internet, the public VPS acts as the
-WireGuard *listener* and the manager *dials out* to it, holding the connection
+WireGuard _listener_ and the manager _dials out_ to it, holding the connection
 open with `PersistentKeepalive` since it's the NAT'd side. Once established the
 tunnel is bidirectional, so the agent can reach the manager without the manager
 ever being publicly reachable.
@@ -59,7 +59,7 @@ SSH doesn't touch the default route or the live session — no risk of locking
 myself out of the VPS.
 
 **Defense in depth at the manager.** A host firewall rule (ufw) permits agent
-traffic on TCP 1514–1515 *only* from the VPS's tunnel address (`10.10.10.1`),
+traffic on TCP 1514–1515 _only_ from the VPS's tunnel address (`10.10.10.1`),
 not from the whole LAN. The agent path is the only path in.
 
 **Full VM, not a container, for the manager.** Wazuh's indexer is OpenSearch,
@@ -69,7 +69,7 @@ A full VM sidesteps that entirely.
 ## Verification
 
 The dashboard confirms the endpoint as **Active**, and — the detail that proves
-the design — the manager sees it on `10.10.10.1`, its *tunnel* address, not its
+the design — the manager sees it on `10.10.10.1`, its tunnel address, not its
 public IP. The agent reached the manager entirely inside the encrypted overlay.
 
 ## What this demonstrates
