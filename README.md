@@ -10,7 +10,7 @@ Tulsa, OK. Hands-on IT and security work built and documented in a self-hosted h
 | ---------------------------- | ---------------------------------------------------------------------------- | -------------- |
 | [Proxmox Homelab](./proxmox) | Type-1 hypervisor deployment, VM provisioning, resource planning             | ✅ Complete    |
 | [Wazuh SIEM](./wazuh)        | SIEM deployment, secure remote endpoint onboarding (WireGuard), telemetry ingestion | ✅ Complete    |
-| Honeypot Analysis            | Internet-facing honeypot, real-world attack data, MITRE ATT&CK mapping       | 📋 Planned     |
+| [Honeypot Analysis](./honeypot/README.md)            | Internet-facing honeypot, real-world attack data, MITRE ATT&CK mapping       | ✅ Complete      |
 | DFIR Case Studies            | Memory & disk forensics, investigation methodology                           | 📋 Planned     |
 | TryHackMe SOC Level 1        | Structured hands-on SOC analyst training                                      | 📋 Planned     |
 | [SOC Analysis](./soc-analysis) | Alert triage case studies — investigation, verification, disposition | 🔄 In progress |
