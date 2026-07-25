@@ -1,8 +1,6 @@
 # Case 001 — Rootcheck "Trojaned Binary" Alert on `/usr/bin/md5sum`
 
-> **Environment note:** This is a triage case study from a personal homelab
-> security-monitoring environment, not a production SOC. Hosts and data are my own.
-> The intent is to document a real alert-investigation process end to end.
+> **Environment note:** This is a triage case study from a personal homelab security-monitoring environment, not a production SOC. Hosts and data are my own. The investigation was worked with AI assistance.
 
 
 **Date:** 2026-07-20
