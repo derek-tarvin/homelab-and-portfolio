@@ -39,7 +39,7 @@ This creates two interfaces on Fornax, each scoped to a single peer IP. Hestia a
 
 ## Detection rules
 
-Wazuh ships nothing for Cowrie out of the box — the ruleset below was written from scratch. Levels were set so the constant noise of SSH connection attempts wouldn't drown out the events that actually matter; connects sit at level 3, and the loud levels are reserved for post-auth behavior and payload retrieval. (See [Three failures](#three-failures) below for how these rules ended up shaped this way.)
+Wazuh ships nothing for Cowrie out of the box — the ruleset below was written with AI assistance. Levels were set so the constant noise of SSH connection attempts wouldn't drown out the events that actually matter; connects sit at level 3, and the loud levels are reserved for post-auth behavior and payload retrieval. (See [Three failures](#three-failures) below for how these rules ended up shaped this way.)
 
 ```xml
 <group name="cowrie,honeypot,">
