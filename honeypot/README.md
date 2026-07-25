@@ -35,7 +35,7 @@ This creates two interfaces on Fornax, each scoped to a single peer IP. Hestia a
 
 - **Hestia** — production VPS, Ubuntu 22.04.
 - **Vesta** — DigitalOcean VPS, Ubuntu 26.04.
-- **Fornax** — VM on Proxmox, Ubuntu 24.04.
+- **Fornax** — VM on Proxmox, Ubuntu 26.04.
 
 ## Detection rules
 

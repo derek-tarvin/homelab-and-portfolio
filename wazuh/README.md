@@ -38,7 +38,7 @@ Rather than expose the manager, the agent reaches it through a WireGuard overlay
 - **Host:** Proxmox VE on bare metal (Intel N95, 16GB) — a type-1 hypervisor,
   no desktop-OS overhead, so RAM stays available for VMs.
 - **Manager:** Wazuh 4.14 all-in-one (manager + indexer + dashboard) on an
-  Ubuntu Server 24.04 LTS VM (6GB / 2 vCPU / 50GB).
+  Ubuntu Server 26.04 LTS VM (6GB / 2 vCPU / 64GB).
 - **Monitored endpoint:** a production Ubuntu 22.04 LTS VPS running the Wazuh
   agent.
 - **Transport:** WireGuard point-to-point tunnel on the `10.10.10.0/24` range.
