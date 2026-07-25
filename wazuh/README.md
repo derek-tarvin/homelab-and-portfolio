@@ -25,7 +25,7 @@ Rather than expose the manager, the agent reaches it through a WireGuard overlay
   ┌────────────────────┐                ┌──────────────────────────┐
   │  Ubuntu 22.04 LTS  │                │  Proxmox VE (N95 mini PC) │
   │  Wazuh agent       │                │  ┌────────────────────┐  │
-  │  wg0: 10.10.10.1   │◄──WireGuard───►│  │ Ubuntu 24.04 VM    │  │
+  │  wg0: 10.10.10.1   │◄──WireGuard───►│  │ Ubuntu 26.04 VM    │  │
   │  (WG listener,     │   encrypted    │  │ Wazuh manager      │  │
   │   public IP)       │    tunnel      │  │ wg0: 10.10.10.2    │  │
   └────────────────────┘                │  │ (dials out +       │  │

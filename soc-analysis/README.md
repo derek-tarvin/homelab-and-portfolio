@@ -7,7 +7,7 @@ not just the verdict — every conclusion is backed by evidence gathered on the
 affected asset.
 
 > **Environment note:** These are case studies from a personal homelab
-> security-monitoring lab (Wazuh SIEM, with Suricata/Zeek and honeypot sources
+> security-monitoring lab (Wazuh SIEM, with honeypot sources
 > coming online), not a production SOC. Hosts and data are my own.
 
 ## Cases
