@@ -4,7 +4,7 @@
 > security-monitoring environment, not a production SOC. Hosts and data are my own.
 > The intent is to document a real alert-investigation process end to end.
 
-**Analyst:** Derek Tarvin
+
 **Date:** 2026-07-20
 **Alert source:** Wazuh 4.x (rootcheck), self-hosted manager
 **Disposition:** False Positive (verified)
