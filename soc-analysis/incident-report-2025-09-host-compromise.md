@@ -1,10 +1,8 @@
 # Incident report — production host compromise, 09/2025
 
-_Derek's draft, in his words. Structure from `incident-report-outline.md`._
-
 ---
 
-## 0 · Header block — Provenance
+## 0 ·  Provenance
 
 Disclosures:
 
