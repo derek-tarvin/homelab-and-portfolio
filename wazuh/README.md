@@ -19,11 +19,11 @@ deliberately-exposed box any route to a production one.
 
 ## The estate
 
-| Host | Role | OS | Resources | Agent |
+| Host | Role | OS | Resources | Agent groups |
 | --- | --- | --- | --- | --- |
-| `fornax` | Wazuh manager (VM on Proxmox) | Ubuntu Server 26.04 LTS | 2 vCPU / 6GB / 64GB | — |
-| `hestia` | Production VPS | Ubuntu 22.04.5 LTS | 4 vCPU / 8GB / 100GB | `001`, group `default` |
-| `vesta` | Cowrie honeypot (DigitalOcean VPS) | Ubuntu 26.04 LTS | 1 vCPU / 1GB / 25GB | `002`, groups `default` + `honeypot` |
+| Fornax | Wazuh manager (VM on Proxmox) | Ubuntu Server 26.04 LTS | 2 vCPU / 6GB / 64GB | — |
+| Hestia | Production VPS | Ubuntu 22.04.5 LTS | 4 vCPU / 8GB / 100GB | `default` |
+| Vesta | Cowrie honeypot (DigitalOcean VPS) | Ubuntu 26.04 LTS | 1 vCPU / 1GB / 25GB | `default`, `honeypot` |
 
 Every spec above was read off the live host with `lsb_release -a` rather than
 copied from these notes — this file previously carried the manager's OS and disk
@@ -34,8 +34,9 @@ wrong for four revisions because the documentation was believed over the machine
 - **Manager:** Wazuh 4.14.6 all-in-one (manager + indexer + dashboard on a single
   node). Automatic updates deliberately disabled; snapshots taken at clean
   install and at first agent connection.
-- **Agents:** both 4.14.6, both Active. The honeypot's agent package is pinned
-  with `apt-mark hold` — an agent must never end up newer than its manager.
+- **Agents:** both 4.14.6, both Active, both reporting on their tunnel addresses.
+  The honeypot's agent package is pinned with `apt-mark hold` — an agent must
+  never end up newer than its manager.
 
 ## Architecture
 
@@ -44,11 +45,11 @@ Rather than expose the manager, each agent reaches it through its own WireGuard
 overlay, with the manager dialing **out** in both cases:
 
 ```
-  Public VPS (hestia)                Home LAN (behind NAT)              Public VPS (vesta)
+  Public VPS (Hestia)                Home LAN (behind NAT)              Public VPS (Vesta)
  ┌────────────────────┐         ┌──────────────────────────────┐      ┌────────────────────┐
  │  Ubuntu 22.04 LTS  │         │  Proxmox VE (N95 mini PC)    │      │  Ubuntu 26.04 LTS  │
- │  Wazuh agent 001   │         │  ┌────────────────────────┐  │      │  Wazuh agent 002   │
- │  wg0: 10.10.10.1   │◄──WG───►│  │ fornax — Wazuh manager │  │◄─WG─►│  wg0: 10.10.20.1   │
+ │  Wazuh agent       │         │  ┌────────────────────────┐  │      │  Wazuh agent       │
+ │  wg0: 10.10.10.1   │◄──WG───►│  │ Fornax — Wazuh manager │  │◄─WG─►│  wg0: 10.10.20.1   │
  │  (WG listener)     │         │  │ wg0: 10.10.10.2        │  │      │  (WG listener)     │
  │                    │         │  │ wg1: 10.10.20.2        │  │      │  Cowrie on 2222    │
  └────────────────────┘         │  │ (dials out on both,    │  │      │  public 22 → 2222  │
@@ -69,8 +70,8 @@ the NAT'd side. Once established the tunnel is bidirectional, so an agent reache
 the manager without the manager ever being publicly reachable.
 
 **Two tunnels, not a hub — and this is the load-bearing one.** The obvious build
-was adding the honeypot as a third peer on the existing `hestia` tunnel. I
-rejected it: that makes `hestia` a router between a machine deliberately exposed
+was adding the honeypot as a third peer on the existing Hestia tunnel. I
+rejected it: that makes Hestia a router between a machine deliberately exposed
 to attackers and the production stack, which is a live network path across the
 exact boundary the honeypot exists to preserve. The second tunnel runs on its own
 subnet with its own keypair — no IP forwarding anywhere, no contact with
@@ -100,12 +101,12 @@ The premise of this section is a lesson the build taught twice: **a green agent,
 a loaded ruleset, and no errors is indistinguishable from a working pipeline and
 a completely silent one.** Status reads do not close the question.
 
-**`hestia` (agent `001`)** — Active, and the manager sees it at `10.10.10.1`, its
+**Hestia** — Active, and the manager sees it at `10.10.10.1`, its
 tunnel address, rather than its public IP. That is the detail that proves the
 transport design: the agent reached the manager entirely inside the encrypted
 overlay. Its telemetry lands in the `default` group's ruleset.
 
-**`vesta` (agent `002`)** — verified end to end against a real unsolicited
+**Vesta** — verified end to end against a real unsolicited
 attacker session rather than a synthetic test. A bot from `125.39.148.106`
 (SSH-2.0-Go client, session `e62daa89a735`) hit public port 22; the NAT counter
 incremented, Cowrie logged `cowrie.session.connect` with `dst_port 2222`, and on
@@ -160,7 +161,7 @@ Stated rather than left for someone to find:
   *accepts* the credentials offered — designed behavior, not a rule defect.
   `100110`'s 8-attempts-in-120s window was set from an assumption rather than
   from measured attacker pacing.
-- **No detections are written against `hestia`'s own traffic yet.** It's enrolled
+- **No detections are written against Hestia's own traffic yet.** It's enrolled
   and reporting; the rules so far are all honeypot-side.
 
 ## What this demonstrates
@@ -183,4 +184,4 @@ Stated rather than left for someone to find:
 - Scope the rootcheck tuning to the `honeypot` agent group so production keeps
   the check, and capture before/after
 - Decide the SCA gap explicitly — fix the policy for 26.04 or accept it in writing
-- Detections against `hestia`'s own log sources
+- Detections against Hestia's own log sources

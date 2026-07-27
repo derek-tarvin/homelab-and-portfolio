@@ -20,7 +20,11 @@ Since Cowrie listens on port 22 for SSH, the real admin SSH port was moved to a 
     - `wg0.conf` — interface `10.10.10.2/24`, AllowedIPs limited to `10.10.10.1/32`, Endpoint set to Hestia's public IP.
     - `wg1.conf` — interface `10.10.20.2/24`, AllowedIPs limited to `10.10.20.1/32`, Endpoint set to Vesta's public IP.
 - **Vesta**
-  - UFW currently not enabled — see [Open items](#open-items) and [What's next](#whats-next).
+  - UFW enabled 07/25/2026, default deny inbound. It allows Cowrie's listener,
+    the WireGuard port the manager dials into, and a relocated admin SSH port —
+    and nothing else. That last part is the point: on a honeypot, any open port
+    other than Cowrie's is a path to compromising the box that never touches
+    Cowrie, and therefore never reaches the SIEM.
   - 1 WireGuard interface:
     - `wg0.conf` — interface `10.10.20.1/24`, AllowedIPs limited to `10.10.20.2/32`.
 - **Hestia**
@@ -108,10 +112,9 @@ A follow-up test using fictitious credentials logged in successfully, as Cowrie 
 - Let the honeypot soak and gather data.
 - Return to Wazuh after a week and check for warnings.
 - If a sufficient body of data is gathered, start analyzing for patterns, vulnerabilities, and hardening.
-- Vesta's UFW is not yet enabled.
 
 ## What's next
 
 - Data analysis once the honeypot has soaked long enough to produce meaningful data.
 - Review for specific target files and start making it harder for attackers to reach them.
-- **Enable Vesta's UFW.** The whole point of this honeypot is to catch attacker traffic on port 22. Leaving any other port open — beyond the relocated admin SSH port — is an unnecessary risk that could let an attacker compromise the box without ever touching Cowrie.
+- Retune rule `100110`. Its 8-failures-in-120-seconds window was set from an assumption, and it has still never fired on live traffic — measuring the actual inter-attempt intervals in the capture is the way to fix it. See the [Wazuh SIEM write-up](../wazuh/README.md) for the current state of the ingest chain and its known gaps.
