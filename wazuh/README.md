@@ -6,7 +6,7 @@ over private WireGuard tunnels — **separate tunnels, not a shared one** — so
 manager is never exposed to the public internet and the honeypot has no network
 path to production.
 
-![Wazuh dashboard showing a monitored endpoint active over its tunnel interface](wazuh-agent-active-EDIT.jpg)
+![Wazuh dashboard showing a monitored endpoint active over its tunnel interface](image-1785240288123.png)
 
 ## Objective
 
