@@ -18,13 +18,32 @@
 > ---
 > **AI Assistance:**
 > - **Hunt-solving:** No AI assistance was used.
-> - **Write-up:**  AI provided the format and structure. All content was written by me.
+> - **Write-up:**  All content was written by me. AI provided the format and structure.  Any use of AI will be noted.
 
 ## Scenario
 
 
 
 A breach was discovered involving an employee's credentials. The company initially wanted to label it as a "curious employee" exploring. However, evidence led to the conclusion that an external threat actor had gained access and exfiltrated stolen data.
+
+The first data point that suggested this was an external attack was the remote access source.  If this were just a "curious employee" scenario, this would have been done from an internal endpoint.
+
+The second data point that pointed towards an external actor were the failed logon attempts.  The failed attempts were minimal (<5) before they gained access.  This was not a brute force attack nor a password spray.   This was targeting a specific employee with specific credentials.
+
+Once they gained access the attacker conducted a minimal survey to get their bearings - whoami, hostname, and ipconfig. They checked the identity of the account and the groups it was assigned to.
+
+The attacker then copied a file that was within their security group and staged it in a separate directory. They then added the compromised account to the HR group and moved laterally via SMB to the HR server.
+
+The attacker copied another file to the staging area.
+
+The attacker zipped the files into an archive and then moved the files off the Nimbus estate.
+
+No persistence was added nor were any new accounts created.  No services or scripts were created to establish persistence.
+
+Given the attack chain, this suggests that the company's initial assumptions were wrong.  Additionally, sensitive data was removed.
+
+Also, the HR data likely contained PII (personally identifiable information) which should trigger a disclosure process.
+
 
 <details>
 <summary>From the Review Brief:</summary>
@@ -106,14 +125,14 @@ _Duplicate this block per flag worth a full narrative — a genuine sticking poi
 
 >_Where you actually got stuck, what broke your assumption, what you'd do differently starting over. This is the section that reads as honest rather than a highlight reel — keep it that way._
 
-There were a few places where the answers didn't parse "quite right".  This made me question my conclusions but it was usually just a problem with formatting or terminology.
+There were a few places where the answers didn't parse "quite right".  This made me question my conclusions but it was usually just a problem with formatting or terminology. I had to burn some hints to get the right formatting to get past the gate.
 
 Example: 
 
 >**My answer:** whoami.exe, hostname.exe, ... <br>
 > **"Correct" answer:** whoami, hostname, ...
 
-I had to burn some hints to get the right formatting to get past the gate.
+
 
 ## Skills & techniques demonstrated
 
@@ -134,7 +153,7 @@ _Bullet list, portfolio-reader-facing. What does this hunt actually prove you ca
 |Gathers more files on HR server |Collection (TA0009) | T1039 – Data from Network Shared Drive|
 |Zips files |Collection (TA0009) |T1560.001 – Archive Collected Data: Archive via Utility |
 |Copies to directory, pulls out via RDP mapped drive |Exfiltration (TA0010) |T1041 – Exfiltration Over C2 Channel (RDP session used as the exfil channel via drive redirection) |
-> AI assistance note: I provided the attack chain information to  AI who then mapped each item to the MITRE ATT&CK framework.
+> AI assistance note: I provided the attack chain information to AI which mapped each item to the MITRE ATT&CK framework.
 ---
 
 _Part of [homelab-and-portfolio](../../README.md)._
