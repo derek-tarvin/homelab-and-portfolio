@@ -15,7 +15,7 @@
 
 > **Environment note:**
 > - Practice/archived CTF-style hunt on a public training platform, not a live graded assessment or production environment.
-> ---
+
 > **AI Assistance:**
 > - **Hunt-solving:** No AI assistance was used.
 > - **Write-up:**  All content was written by me. AI provided the format and structure.  Any use of AI will be noted.
@@ -84,9 +84,9 @@ Based on the brief, I started by reviewing the "evidence bag".  In this were 4 a
 - A snapshot of the employee's LinkedIn page
 - A snapshot from haveibeenpwned.com
 - A snapshot of Nimbus Health Security Operations
-   - A User Role Matrix for all employees of Nimus Health
+   - A User Role Matrix for all employees of Nimbus Health
    - Network Environment table with servers, workstations and shared storage information
-      - Domain, Public and private IP adresses, NetBIOS Domain
+      - Domain, Public and private IP addresses, NetBIOS Domain
 - A snapshot of an internal IT document that "found its way into a public document cache"
 ![alt text](image.png)
 
@@ -172,19 +172,44 @@ The account will need to be rebuilt from scratch with new credentials in order t
 
 #### Data Exfiltration (PII)
 
-One of the files that were obtained from the HR server likely contained PII (personally indentifiable information).  This will likely necessitate some kind of breach disclosure.
+One of the files that were obtained from the HR server likely contained PII (personally identifiable information).  This will likely necessitate some kind of breach disclosure.
 
 
 ## Flags
 
 _A scan table for all 25, then deep-dives below for the ones actually worth narrating. Not every flag needs a paragraph — some are "grepped the log, there it was." Say so and move on. Save the depth for the ones that took real work._
 
+
 | # | Objective (what it asked for) | Technique | Answer / evidence |
 |---|---|---|---|
-| 1 | | | |
-| 2 | | | |
-| … | | | |
-| 25 | | | |
+| 0 | Acknowledge the brief's scope — workspace, host, and time window — by giving the gate phrase from the brief. | | |
+| 1 | Name the Nimbus account under review, using the role matrix to identify who joined recently. | | |
+| 2 | Find the account holder's public professional profile and give the job title exactly as listed. | | |
+| 3 | From the same profile, give the personal (non-work) contact email address listed. | | |
+| 4 | Run that email through a breach-exposure service; identify which breach hit is stale vs. which one actually explains a reusable, current password, and why. | | |
+| 5 | From a leaked internal support document, identify the public IP address of the machine that accepts remote support connections. | | |
+| 6 | Out of constant internet-wide noise hitting the host, isolate the one external IP guessing low-volume and specifically against this account until it succeeds. | | |
+| 7 | Give the Windows logon type name (not the numeric ID) for the successful logon, showing it wasn't an interactive/local session. | | |
+| 8 | Identify the second external IP the same account authenticated from a short time after the first successful logon. | | |
+| 9 | Reconstruct, in order, the exact burst of built-in recon commands the operator ran once on — filtering out unrelated Windows/Edge first-run noise. | | |
+| 10 | Determine whether a file-deletion event inside that command burst was the operator or an automated process, and name what's actually responsible. | | |
+| 11 | Give the exact command used to enumerate what a specific file server was sharing. | | |
+| 12 | Give the exact command (with the real group name from the log, not an assumed naming convention) used to enumerate membership of the HR group. | | |
+| 13 | Name the file — outside the account's authorized IT share — that was opened after reaching across departmental boundaries. | | |
+| 14 | Give the full local folder path where the operator staged gathered files before moving them. | | |
+| 15 | Name the archive file (with extension) the staged material was compressed into. | | |
+| 16 | Trace the archive to determine it left over the existing session (not upload/cloud) and give the destination path it was written to. | | |
+| 17 | Determine from scheduled tasks, services, and autoruns whether the operator established persistence, and account for what any entries found actually are. | | |
+| 18 | Determine whether the account ever executed anything on the file server itself, and if not, explain how the HR material was actually reached. | | |
+| 19 | Give the honest overall read of the incident — who was really driving the account and from where — and what's absent from the evidence that rules out both malware and a genuine curious insider. | | |
+| 20 | Prove the logon pattern is credential reuse from the identified breach rather than brute force, citing the failure count, the success, and why the breach data explains it. | | |
+| 21 | Explain the ~10-minute gap between the first and second command bursts — what changed at the start of the second session. | | |
+| 22 | Give the exact command the operator ran to check what was available through the RDP channel before exfiltrating, proving premeditation over opportunism. | | |
+| 23 | State the first containment action required and why a password reset alone is insufficient given how access was obtained. | | |
+| 24 | Identify the type of data exfiltrated and what regulatory/disclosure obligation its exposure triggers. | | |
+
+
+> AI was used to create the table and pull data in for the Objective section. All other content was written by me.
 
 ### Deep-dives
 
@@ -223,9 +248,14 @@ Example:
 
 ## Skills & techniques demonstrated
 
-_Bullet list, portfolio-reader-facing. What does this hunt actually prove you can do?_
-
-- [ ]
+- Connecting OSINT to SIEM data
+- Pivots across multiple tables with KQL
+- Evidence-based review against the hypothesis
+- False-positive triage
+- Signal/Noise reduction
+- Attack Chain Reconstruction
+- ATT&CK mapping
+- Incident Response beyond detection
 
 ## MITRE ATT&CK mapping _
 
