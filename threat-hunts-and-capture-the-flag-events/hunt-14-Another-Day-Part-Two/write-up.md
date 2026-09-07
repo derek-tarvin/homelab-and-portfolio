@@ -38,7 +38,7 @@ The attacker copied another file to the staging area.
 
 The attacker zipped the files into an archive and then moved the files off the Nimbus estate.
 
-No persistence was added nor were any new accounts created.  No services or scripts were created to establish persistence.
+There is no evidence that persistence was added nor that any new accounts created.  No services or scripts were created to establish persistence.
 
 Given the attack chain, this suggests that the company's initial assumptions were wrong.  Additionally, sensitive data was removed.
 
