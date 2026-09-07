@@ -1,38 +1,65 @@
 # ANOTHER DAY, PART TWO — Threat Hunt Write-Up
 
-> _Delete this line and everything in `[brackets]` or *italics* as you fill the doc in. Sections are here because they're usually worth having — cut any that don't earn their place for this hunt, and add ones that do._
-
 ## At a glance
 
 | | |
-|---|---|
+| --- | --- |
 | **Hunt** | ANOTHER DAY, PART TWO |
 | **Platform hunt #** | 14 |
 | **Platform** | The Cyber Range — hunt.lognpacific.com |
 | **Format** | CTF-style, 25 flags |
-| **Date completed** | [YYYY-MM-DD] |
-| **Time spent** | [rough total, or leave blank] |
-| **Score / rank** | [points, leaderboard position if relevant] |
-| **Status** | Archived/practice hunt. Does not count toward The Cyber Range's career-dashboard scoring or the internship's technical bar — those are gated on a *live, time-limited* Community Threat Hunt, which this isn't. |
+| **Date completed** | 2026-09-07 |
+| **Time spent** | ~2 hours |
+| **Score / rank** | 2455 points, 38th solve. |
+| **Status** | Archived/practice hunt. Does not count toward the internship's technical bar — those are gated on a *live, time-limited* Community Threat Hunt, which this isn't. |
 
 > **Environment note:**
-> - Practice/archived CTF-style hunt on a public training platform, not a live graded assessment or production environment. 
-> - Hunt-solving: No AI assistance was used.
-> - Write-up:  AI provided the format and structure. All content was written by me.
+> - Practice/archived CTF-style hunt on a public training platform, not a live graded assessment or production environment.
+> ---
+> **AI Assistance:**
+> - **Hunt-solving:** No AI assistance was used.
+> - **Write-up:**  AI provided the format and structure. All content was written by me.
 
 ## Scenario
 
-_What premise/story did the hunt hand you? Copy the briefing if you have it, or summarize it in your own words. This is what gives the flags below context instead of reading as a bare list of trivia._
 
-[...]
+
+A breach was discovered involving an employee's credentials. The company initially wanted to label it as a "curious employee" exploring. However, evidence led to the conclusion that an external threat actor had gained access and exfiltrated stolen data.
+
+<details>
+<summary>From the Review Brief:</summary>
+
+From: Hunt Lead // Cyber Range SOC
+
+To: Threat Hunt // On-Shift
+
+Re: Nimbus Health // credential exposure follow-up
+
+You know this client. Nimbus Health, the outpatient clinic we picked apart back in March. They are back on the board, and this time the shape of the problem is different.
+
+A nearby industrial park opened. Patient volume went up, and so did billing, HR onboarding and endpoint support. Nimbus hired across every department at once and put the new starters on the same shared workstations they already had. Growth first, access review later.
+
+During a routine credential exposure sweep we flagged one of those new hires. His identity is sitting in public, and so is an old password of his. In the same period, authentication telemetry on one of their machines shows failed logons against that account, then a success.
+
+What we need you to work out:
+
+   · How the account was found and why it was worth targeting
+   · Whether the credentials were actually used, and from where
+   · What happened once someone was on the keyboard
+   · What the account reached outside its role, and where that material went
+   · Whether anything was left behind, and the honest root cause
+
+Telemetry is in the law-cyber-range Sentinel workspace, MDE tables: DeviceLogonEvents, DeviceProcessEvents, DeviceFileEvents, DeviceEvents. This one starts outside the SIEM, though. Some of the earliest answers are not in any log, they are in what the internet already knows about this man. Work the artefacts below before you write your first query.
+</details>
 
 ## Environment & tools
 
-_What you were actually looking at — log source, PCAP, a simulated host, a SIEM query interface, whatever the platform gave you — and what you used to work it._
+> _What you were actually looking at — log source, PCAP, a simulated host, a SIEM query interface, whatever the platform gave you — and what you used to work it._
 
 | Data source / tool | Used for |
 |---|---|
-| [ ] | [ ] |
+| "Evidence Bag"  | Background information  |
+| SIEM (Microsoft Defender/Sentinel) | KQL querying logs  |
 
 ## Approach
 
@@ -77,9 +104,16 @@ _Duplicate this block per flag worth a full narrative — a genuine sticking poi
 
 ## Sticking points & retrospective
 
-_Where you actually got stuck, what broke your assumption, what you'd do differently starting over. This is the section that reads as honest rather than a highlight reel — keep it that way._
+>_Where you actually got stuck, what broke your assumption, what you'd do differently starting over. This is the section that reads as honest rather than a highlight reel — keep it that way._
 
-[...]
+There were a few places where the answers didn't parse "quite right".  This made me question my conclusions but it was usually just a problem with formatting or terminology.
+
+Example: 
+
+>**My answer:** whoami.exe, hostname.exe, ... <br>
+> **"Correct" answer:** whoami, hostname, ...
+
+I had to burn some hints to get the right formatting to get past the gate.
 
 ## Skills & techniques demonstrated
 
@@ -87,12 +121,20 @@ _Bullet list, portfolio-reader-facing. What does this hunt actually prove you ca
 
 - [ ]
 
-## MITRE ATT&CK mapping _(optional — include if the hunt's scenario maps cleanly to real tactics/techniques, skip if forcing it)_
+## MITRE ATT&CK mapping _
 
-| Tactic | Technique | Where it showed up in the hunt |
+| Scenario Step |Tactic | Technique |
 |---|---|---|
-| | | |
-
+| Finds employee's LinkedIn post about new IT job| Reconnaissance (TA0043)|T1593.001 – Search Open Websites/Domains: Social Media |
+|Correlates employee to a prior breach dump |Reconnaissance (TA0043) |T1589.001 – Gather Victim Identity Info: Credentials |
+|Logs in via RDP using the breached password |Initial Access (TA0001) |T1133 – External Remote Services + T1078 – Valid Accounts |
+|Gathers files (first pass) |Collection (TA0009) |T1005 – Data from Local System |
+|Adds self to HR group |Privilege Escalation / Persistence (TA0004/TA0003) |T1098.007 – Account Manipulation: Additional Local or Domain Groups |
+|Moves to HR server via SMB |Lateral Movement (TA0008) |T1021.002 – Remote Services: SMB/Windows Admin Shares |
+|Gathers more files on HR server |Collection (TA0009) | T1039 – Data from Network Shared Drive|
+|Zips files |Collection (TA0009) |T1560.001 – Archive Collected Data: Archive via Utility |
+|Copies to directory, pulls out via RDP mapped drive |Exfiltration (TA0010) |T1041 – Exfiltration Over C2 Channel (RDP session used as the exfil channel via drive redirection) |
+> AI assistance note: I provided the attack chain information to  AI who then mapped each item to the MITRE ATT&CK framework.
 ---
 
 _Part of [homelab-and-portfolio](../../README.md)._
