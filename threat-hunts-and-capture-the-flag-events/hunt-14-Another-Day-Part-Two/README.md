@@ -88,7 +88,7 @@ Based on the brief, I started by reviewing the "evidence bag".  In this were 4 a
    - Network Environment table with servers, workstations and shared storage information
       - Domain, Public and private IP addresses, NetBIOS Domain
 - A snapshot of an internal IT document that "found its way into a public document cache"
-![alt text](image.png)
+![alt text](./images/image.png)
 
 This information gave me a sense of who was targeted, how the credentials were obtained, and how the attacker knew where to use the credentials.
 
@@ -98,21 +98,21 @@ Moving into the SIEM I began by narrowing to the time frame and the targeted emp
 
 Everything looked like normal logon events except for a short round of 3 failed login attempts in a row.  Also these were attempts from a RemoteIP.
 
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 This is where it started to look more like an external attack than an internal "curious employee".  One thing that seemed odd was that the IP addresses of the attacker changed after a short break.  
 
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 I then checked to see what the attacker did once they had access.
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 It appeared the attacker was just getting their bearings with _whoami, hostname, ipconfig,_ and _whoami /groups_
 
 In the midst of this was a random file deletion, but it turns out that it was just auto-update process for OneDrive. 
 
-![alt text](image-5.png) 
+![alt text](./images/image-5.png) 
 
 So there's no evidence that the attacker destroyed anything on the _nh-wks-it-01_ endpoint.
 
@@ -124,19 +124,19 @@ Pivoting to _DeviceProcessEvents_, I started looking for their actions.
 
 First, a query to _\\\\NH-FS-01_ 
 
-![alt text](image-6.png)
+![alt text](./images/image-6.png)
 
 Then they add the account to the _NH-HR-Users_ group
 
-![alt text](image-7.png)
+![alt text](./images/image-7.png)
 
 And then they open a series of files in Notepad
 
-![alt text](image-9.png)
+![alt text](./images/image-9.png)
 
 And then established a connection for file transfers.
 
-![alt text](image-8.png)
+![alt text](./images/image-8.png)
 
 That gives a sense of what they were looking at and doing.  Next I wanted to see what they did with the files from _\\\\NH-FS-01_ and adding the account to the _HR-Users_ group.
 
@@ -144,11 +144,11 @@ Pivoting to DeviceFileEvents, I start to search broadly but there's too much noi
 
 Interestingly, this search also gave me a new local folder where a copied file was stored.
 
-![alt text](image-10.png)
+![alt text](./images/image-10.png)
 
 This narrowed the results to 121 files.  But there's something new here: _support\_review\_202605.zip_. So the attacker created a ZIP archive of files. And then transferred it out of the workstation and to their local computer.
 
-![alt text](image-11.png)
+![alt text](./images/image-11.png)
 
 ### Putting together The Story
 
