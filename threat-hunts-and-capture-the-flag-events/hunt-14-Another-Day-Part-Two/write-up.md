@@ -22,8 +22,6 @@
 
 ## Scenario
 
-
-
 A breach was discovered involving an employee's credentials. The company initially wanted to label it as a "curious employee" exploring. However, evidence led to the conclusion that an external threat actor had gained access and exfiltrated stolen data.
 
 The first data point that suggested this was an external attack was the remote access source.  If this were just a "curious employee" scenario, this would have been done from an internal endpoint.
@@ -72,17 +70,12 @@ Telemetry is in the law-cyber-range Sentinel workspace, MDE tables: DeviceLogonE
 </details>
 
 ## Environment & tools
-
-> _What you were actually looking at — log source, PCAP, a simulated host, a SIEM query interface, whatever the platform gave you — and what you used to work it._
-
 | Data source / tool | Used for |
 |---|---|
 | "Evidence Bag"  | Background information  |
 | SIEM (Microsoft Defender/Sentinel) | KQL querying logs  |
 
 ## Approach
-
-_The part a flag-by-flag list can't show: how you actually worked the problem. Order of operations, what you tried first and why, any pivot in strategy partway through. This is usually the most useful section for someone reading the write-up rather than grading it — it's the process, not just the answers._
 
 ### The hunt begins
 
@@ -103,7 +96,7 @@ This information gave me a sense of who was targeted, how the credentials were o
 
 Moving into the SIEM I began by narrowing to the time frame and the targeted employee.
 
-Everything looked like normal logon events except for a short round of 3 failed login attempts in a row.  Also these were attempts from a RemoteIP 
+Everything looked like normal logon events except for a short round of 3 failed login attempts in a row.  Also these were attempts from a RemoteIP.
 
 ![alt text](image-1.png)
 
@@ -119,12 +112,67 @@ It appeared the attacker was just getting their bearings with _whoami, hostname,
 
 In the midst of this was a random file deletion, but it turns out that it was just auto-update process for OneDrive. 
 
-![alt text](image-5.png) {width=300 height=200}
+![alt text](image-5.png) 
 
 So there's no evidence that the attacker destroyed anything on the _nh-wks-it-01_ endpoint.
 
+### Gathering Files
 
+At this point, the story I am putting together is of an external actor using information gathered from various sources and has gained access.  Now I need to establish what the attacker was going to do with that access.
 
+Pivoting to _DeviceProcessEvents_, I started looking for their actions. 
+
+First, a query to _\\\\NH-FS-01_ 
+
+![alt text](image-6.png)
+
+Then they add the account to the _NH-HR-Users_ group
+
+![alt text](image-7.png)
+
+And then they open a series of files in Notepad
+
+![alt text](image-9.png)
+
+And then established a connection for file transfers.
+
+![alt text](image-8.png)
+
+That gives a sense of what they were looking at and doing.  Next I wanted to see what they did with the files from _\\\\NH-FS-01_ and adding the account to the _HR-Users_ group.
+
+Pivoting to DeviceFileEvents, I start to search broadly but there's too much noise.  654 files created by "m.reed". That was when I remembered that one of the files that was opened in Notepad was a CSV file.  Narrowing the search to filenames containing CSV gave me 2 hits.  Crucially, this also gives me a timestamp to narrow my search.
+
+Interestingly, this search also gave me a new local folder where a copied file was stored.
+
+![alt text](image-10.png)
+
+This narrowed the results to 121 files.  But there's something new here: _support\_review\_202605.zip_. So the attacker created a ZIP archive of files. And then transferred it out of the workstation and to their local computer.
+
+![alt text](image-11.png)
+
+### Putting together The Story
+
+Now we have a much more complete story:
+- An attacker used credentials assembled from OSINT
+- Access was established through a Remote Desktop session
+- The attacker gathered multiple files
+- The files were zipped into an archive
+- The archive was moved out of the Nimbus Health estate
+
+This was likely an attack of opportunity. I did not find evidence of establishing persistent access nor did I find evidence that any files were deleted and no effort was made to cover the trail.
+
+### The Aftermath
+
+#### Isolation and Containment
+
+In this case, the endpoint that was accessed needs to be isolated until the weaknesses can be addressed.
+
+Remediation will need to go beyond just resetting the credentials. Because this breach was conducted by RDP, changing the password doesn't stop access - sessions are not automatically reset with a password reset.
+The account will need to be rebuilt from scratch with new credentials in order to invalidate the RDP session.
+
+#### Data Exfiltration (PII)
+
+One of the files that were obtained from the HR server likely contained PII (personally indentifiable information).  This will likely necessitate some kind of breach disclosure.
 
 
 ## Flags
@@ -163,8 +211,6 @@ _Duplicate this block per flag worth a full narrative — a genuine sticking poi
 ```
 
 ## Sticking points & retrospective
-
->_Where you actually got stuck, what broke your assumption, what you'd do differently starting over. This is the section that reads as honest rather than a highlight reel — keep it that way._
 
 There were a few places where the answers didn't parse "quite right".  This made me question my conclusions but it was usually just a problem with formatting or terminology. I had to burn some hints to get the right formatting to get past the gate.
 
