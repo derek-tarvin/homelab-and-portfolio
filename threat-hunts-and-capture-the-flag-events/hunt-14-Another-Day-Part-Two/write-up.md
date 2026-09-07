@@ -84,7 +84,40 @@ Telemetry is in the law-cyber-range Sentinel workspace, MDE tables: DeviceLogonE
 
 _The part a flag-by-flag list can't show: how you actually worked the problem. Order of operations, what you tried first and why, any pivot in strategy partway through. This is usually the most useful section for someone reading the write-up rather than grading it — it's the process, not just the answers._
 
-[...]
+### The hunt begins
+
+Based on the brief, I started by reviewing the "evidence bag".  In this were 4 artifacts:
+
+- A snapshot of the employee's LinkedIn page
+- A snapshot from haveibeenpwned.com
+- A snapshot of Nimbus Health Security Operations
+   - A User Role Matrix for all employees of Nimus Health
+   - Network Environment table with servers, workstations and shared storage information
+      - Domain, Public and private IP adresses, NetBIOS Domain
+- A snapshot of an internal IT document that "found its way into a public document cache"
+![alt text](image.png)
+
+This information gave me a sense of who was targeted, how the credentials were obtained, and how the attacker knew where to use the credentials.
+
+### Getting the lay of the land
+
+Moving into the SIEM I began by narrowing to the time frame and the targeted employee.
+
+Everything looked like normal logon events except for a short round of 3 failed login attempts in a row.  Also these were attempts from a RemoteIP 
+
+![alt text](image-1.png)
+
+This is where it started to look more like an external attack than an internal "curious employee".  One thing that seemed odd was that the IP addresses of the attacker changed after a short break.  
+
+![alt text](image-2.png)
+
+I then checked to see what the attacker did once they had access.
+
+![alt text](image-3.png)
+
+It appeared the attacker was just getting their bearings with _whoami, hostname, ipconfig,_ and _whoami /groups_
+
+In the midst of this was a random file deletion, but it turns out that it was just auto-update process for OneDrive. 
 
 ## Flags
 
