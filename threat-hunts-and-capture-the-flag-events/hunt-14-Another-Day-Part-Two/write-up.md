@@ -15,7 +15,10 @@
 | **Score / rank** | [points, leaderboard position if relevant] |
 | **Status** | Archived/practice hunt. Does not count toward The Cyber Range's career-dashboard scoring or the internship's technical bar — those are gated on a *live, time-limited* Community Threat Hunt, which this isn't. |
 
-> **Environment note:** [Practice/archived CTF-style hunt on a public training platform, not a live graded assessment or production environment. State here whether the write-up itself was drafted solo or with AI assistance — the hunt-solving and the write-up are separate claims; don't let one imply the other.]
+> **Environment note:**
+> - Practice/archived CTF-style hunt on a public training platform, not a live graded assessment or production environment. 
+> - Hunt-solving: No AI assistance was used.
+> - Write-up:  AI provided the format and structure. All content was written by me.
 
 ## Scenario
 
