@@ -119,6 +119,14 @@ It appeared the attacker was just getting their bearings with _whoami, hostname,
 
 In the midst of this was a random file deletion, but it turns out that it was just auto-update process for OneDrive. 
 
+![alt text](image-5.png){width=300}
+
+So there's no evidence that the attacker destroyed anything on the _nh-wks-it-01_ endpoint.
+
+
+
+
+
 ## Flags
 
 _A scan table for all 25, then deep-dives below for the ones actually worth narrating. Not every flag needs a paragraph — some are "grepped the log, there it was." Say so and move on. Save the depth for the ones that took real work._
