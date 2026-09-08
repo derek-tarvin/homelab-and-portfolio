@@ -14,5 +14,6 @@ Tulsa, OK. Hands-on IT and security work built and documented in a self-hosted h
 | DFIR Case Studies            | Memory & disk forensics, investigation methodology                           | 📋 Planned     |
 | TryHackMe SOC Level 1        | Structured hands-on SOC analyst training                                      | 📋 Planned     |
 | [SOC Analysis](./soc-analysis/README.md) | Alert triage case studies — investigation, verification, disposition | 🔄 In progress |
+| [Threat Hunts / CTF](./threat-hunts-and-capture-the-flag-events) | CTF-style SIEM threat hunts — attack-chain reconstruction, KQL across multiple log tables, ATT&CK mapping | 🔄 In progress |
 
 _Contact: [LinkedIn](https://www.linkedin.com/in/derek-tarvin/)_

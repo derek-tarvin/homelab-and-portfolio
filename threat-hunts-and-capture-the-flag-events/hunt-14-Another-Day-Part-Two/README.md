@@ -180,7 +180,7 @@ One of the files that were obtained from the HR server likely contained PII (per
 
 | # | Objective (what it asked for) | Technique | Answer / evidence |
 |---|---|---|---|
-| 0 | Acknowledge the brief's scope — workspace, host, and time window — by giving the gate phrase from the brief. | Evidence Review | |
+| 0 | Acknowledge the brief's scope — workspace, host, and time window — by giving the gate phrase from the brief. | Evidence Review | [REDACTED] |
 | 1 | Name the Nimbus account under review, using the role matrix to identify who joined recently. | Evidence Review | m.reed |
 | 2 | Find the account holder's public professional profile and give the job title exactly as listed. |Evidence Review | IT Support |
 | 3 | From the same profile, give the personal (non-work) contact email address listed. | Evidence Review |mason.reed@hotmail.com  |
@@ -202,7 +202,7 @@ One of the files that were obtained from the HR server likely contained PII (per
 | 19 | Give the honest overall read of the incident — who was really driving the account and from where — and what's absent from the evidence that rules out both malware and a genuine curious insider. | DeviceFileEvents, Evidence Bag, DeviceProcessEvents | External sources, valid credentials, native Windows tools throughout, no malware, no exploitation. |
 | 20 | Prove the logon pattern is credential reuse from the identified breach rather than brute force, citing the failure count, the success, and why the breach data explains it. | DeviceLogonEvents | Three failed logons then a success is the signature of trying a small number of known-good password variants from the breach — not brute force, which would show hundreds of failures with no hit  |
 | 21 | Explain the ~10-minute gap between the first and second command bursts — what changed at the start of the second session. | DeviceLogonEvents | A second RemoteInteractive logon from 45.131.194.61 appears at the start of the gap |
-| 22 | Give the exact command the operator ran to check what was available through the RDP channel before exfiltrating, proving premeditation over opportunism. | DeviceProcessEvents | net view \\tsclient |
+| 22 | Give the exact command the operator ran to check what was available through the RDP channel before exfiltrating, proving premeditation over opportunism. | DeviceProcessEvents | net view \\\\tsclient |
 | 23 | State the first containment action required and why a password reset alone is insufficient given how access was obtained. | DeviceLogonEvents |RDP is still open. disable the account. password is from a public breach |
 | 24 | Identify the type of data exfiltrated and what regulatory/disclosure obligation its exposure triggers. | DeviceFileEvents |PII was exfiltrated. That triggers a disclosure. |
 
@@ -232,7 +232,7 @@ Example:
 - ATT&CK mapping
 - Incident Response beyond detection
 
-## MITRE ATT&CK mapping _
+## MITRE ATT&CK mapping
 
 | Scenario Step |Tactic | Technique |
 |---|---|---|
