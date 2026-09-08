@@ -9,7 +9,7 @@
 | **Platform** | The Cyber Range — hunt.lognpacific.com |
 | **Format** | CTF-style, 25 flags |
 | **Date completed** | 2026-09-07 |
-| **Time spent** | ~2 hours |
+| **Time spent** | Event: ~2 hours, write-up: ~6 hours |
 | **Score / rank** | 2455 points, 38th solve. |
 | **Status** | Archived/practice hunt. Does not count toward the internship's technical bar — those are gated on a *live, time-limited* Community Threat Hunt, which this isn't. |
 
