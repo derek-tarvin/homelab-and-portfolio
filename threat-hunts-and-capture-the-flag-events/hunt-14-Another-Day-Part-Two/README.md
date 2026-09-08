@@ -177,63 +177,38 @@ One of the files that were obtained from the HR server likely contained PII (per
 
 ## Flags
 
-_A scan table for all 25, then deep-dives below for the ones actually worth narrating. Not every flag needs a paragraph — some are "grepped the log, there it was." Say so and move on. Save the depth for the ones that took real work._
-
 
 | # | Objective (what it asked for) | Technique | Answer / evidence |
 |---|---|---|---|
-| 0 | Acknowledge the brief's scope — workspace, host, and time window — by giving the gate phrase from the brief. | | |
-| 1 | Name the Nimbus account under review, using the role matrix to identify who joined recently. | | |
-| 2 | Find the account holder's public professional profile and give the job title exactly as listed. | | |
-| 3 | From the same profile, give the personal (non-work) contact email address listed. | | |
-| 4 | Run that email through a breach-exposure service; identify which breach hit is stale vs. which one actually explains a reusable, current password, and why. | | |
-| 5 | From a leaked internal support document, identify the public IP address of the machine that accepts remote support connections. | | |
-| 6 | Out of constant internet-wide noise hitting the host, isolate the one external IP guessing low-volume and specifically against this account until it succeeds. | | |
-| 7 | Give the Windows logon type name (not the numeric ID) for the successful logon, showing it wasn't an interactive/local session. | | |
-| 8 | Identify the second external IP the same account authenticated from a short time after the first successful logon. | | |
-| 9 | Reconstruct, in order, the exact burst of built-in recon commands the operator ran once on — filtering out unrelated Windows/Edge first-run noise. | | |
-| 10 | Determine whether a file-deletion event inside that command burst was the operator or an automated process, and name what's actually responsible. | | |
-| 11 | Give the exact command used to enumerate what a specific file server was sharing. | | |
-| 12 | Give the exact command (with the real group name from the log, not an assumed naming convention) used to enumerate membership of the HR group. | | |
-| 13 | Name the file — outside the account's authorized IT share — that was opened after reaching across departmental boundaries. | | |
-| 14 | Give the full local folder path where the operator staged gathered files before moving them. | | |
-| 15 | Name the archive file (with extension) the staged material was compressed into. | | |
-| 16 | Trace the archive to determine it left over the existing session (not upload/cloud) and give the destination path it was written to. | | |
-| 17 | Determine from scheduled tasks, services, and autoruns whether the operator established persistence, and account for what any entries found actually are. | | |
-| 18 | Determine whether the account ever executed anything on the file server itself, and if not, explain how the HR material was actually reached. | | |
-| 19 | Give the honest overall read of the incident — who was really driving the account and from where — and what's absent from the evidence that rules out both malware and a genuine curious insider. | | |
-| 20 | Prove the logon pattern is credential reuse from the identified breach rather than brute force, citing the failure count, the success, and why the breach data explains it. | | |
-| 21 | Explain the ~10-minute gap between the first and second command bursts — what changed at the start of the second session. | | |
-| 22 | Give the exact command the operator ran to check what was available through the RDP channel before exfiltrating, proving premeditation over opportunism. | | |
-| 23 | State the first containment action required and why a password reset alone is insufficient given how access was obtained. | | |
-| 24 | Identify the type of data exfiltrated and what regulatory/disclosure obligation its exposure triggers. | | |
+| 0 | Acknowledge the brief's scope — workspace, host, and time window — by giving the gate phrase from the brief. | Evidence Review | |
+| 1 | Name the Nimbus account under review, using the role matrix to identify who joined recently. | Evidence Review | m.reed |
+| 2 | Find the account holder's public professional profile and give the job title exactly as listed. |Evidence Review | IT Support |
+| 3 | From the same profile, give the personal (non-work) contact email address listed. | Evidence Review |mason.reed@hotmail.com  |
+| 4 | Run that email through a breach-exposure service; identify which breach hit is stale vs. which one actually explains a reusable, current password, and why. | Evidence Review | Synthient, email addresses and passwords  |
+| 5 | From a leaked internal support document, identify the public IP address of the machine that accepts remote support connections. | Evidence Review |135.237.163.62  |
+| 6 | Out of constant internet-wide noise hitting the host, isolate the one external IP guessing low-volume and specifically against this account until it succeeds. | DeviceLogonEvents  KQL query | 116.45.242.115   |
+| 7 | Give the Windows logon type name (not the numeric ID) for the successful logon, showing it wasn't an interactive/local session. | DeviceLogonEvents  KQL query | RemoteInteractive|
+| 8 | Identify the second external IP the same account authenticated from a short time after the first successful logon. |DeviceLogonEvents  KQL query | 45.131.194.61 |
+| 9 | Reconstruct, in order, the exact burst of built-in recon commands the operator ran once on — filtering out unrelated Windows/Edge first-run noise. |DeviceLogonEvents  KQL query | whoami, hostname, ipconfig /all, whoami /groups|
+| 10 | Determine whether a file-deletion event inside that command burst was the operator or an automated process, and name what's actually responsible. | DeviceLogonEvents  KQL query | not the actor, onedrive auto update |
+| 11 | Give the exact command used to enumerate what a specific file server was sharing. | DeviceLogonEvents  KQL query | net view \\\\NH-FS-01 |
+| 12 | Give the exact command (with the real group name from the log, not an assumed naming convention) used to enumerate membership of the HR group. |DeviceProcessEvents KQL query| net group "NH-HR-Users" /domain |
+| 13 | Name the file — outside the account's authorized IT share — that was opened after reaching across departmental boundaries. |  DeviceProcessEvents KQL query|access_request_queue_20260526.csv |
+| 14 | Give the full local folder path where the operator staged gathered files before moving them. | DeviceFileEvents KQL Query |C:\Users\m.reed\Documents\SupportReview\ |
+| 15 | Name the archive file (with extension) the staged material was compressed into. | DeviceFileEvents| support_review_202605.zip |
+| 16 | Trace the archive to determine it left over the existing session (not upload/cloud) and give the destination path it was written to. | DeviceProcessEvents KQL Query |\\\\tsclient\G\Temp\NimbusSupport\ |
+| 17 | Determine from scheduled tasks, services, and autoruns whether the operator established persistence, and account for what any entries found actually are. | DeviceFileEvents, DeviceProcessEvents KQL Query | no persistence. legitimate activity |
+| 18 | Determine whether the account ever executed anything on the file server itself, and if not, explain how the HR material was actually reached. | DeviceFileEvents KQL Query | no execution. SMB access  |
+| 19 | Give the honest overall read of the incident — who was really driving the account and from where — and what's absent from the evidence that rules out both malware and a genuine curious insider. | DeviceFileEvents, Evidence Bag, DeviceProcessEvents | External sources, valid credentials, native Windows tools throughout, no malware, no exploitation. |
+| 20 | Prove the logon pattern is credential reuse from the identified breach rather than brute force, citing the failure count, the success, and why the breach data explains it. | DeviceLogonEvents | Three failed logons then a success is the signature of trying a small number of known-good password variants from the breach — not brute force, which would show hundreds of failures with no hit  |
+| 21 | Explain the ~10-minute gap between the first and second command bursts — what changed at the start of the second session. | DeviceLogonEvents | A second RemoteInteractive logon from 45.131.194.61 appears at the start of the gap |
+| 22 | Give the exact command the operator ran to check what was available through the RDP channel before exfiltrating, proving premeditation over opportunism. | DeviceProcessEvents | net view \\tsclient |
+| 23 | State the first containment action required and why a password reset alone is insufficient given how access was obtained. | DeviceLogonEvents |RDP is still open. disable the account. password is from a public breach |
+| 24 | Identify the type of data exfiltrated and what regulatory/disclosure obligation its exposure triggers. | DeviceFileEvents |PII was exfiltrated. That triggers a disclosure. |
 
 
 > AI was used to create the table and pull data in for the Objective section. All other content was written by me.
 
-### Deep-dives
-
-_Duplicate this block per flag worth a full narrative — a genuine sticking point, a wrong turn you had to back out of, a technique you hadn't used before, anything with a real "how did I get here" story. Same evidentiary discipline as the rest of the portfolio: show the reasoning, not just the answer._
-
-#### Flag [#] — [short title]
-
-**What it asked:**
-
-[...]
-
-**What I tried first (and why it didn't work, if it didn't):**
-
-[...]
-
-**What actually worked:**
-
-[...]
-
-**Evidence:**
-
-```
-[query, log excerpt, command output, whatever backs the answer]
-```
 
 ## Sticking points & retrospective
 
