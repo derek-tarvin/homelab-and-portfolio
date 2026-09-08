@@ -1,6 +1,6 @@
 # Incident report — production host compromise, 09/2025
 
-> - AI assistance was used in writing this Incident Report.  All of the data and history are mine; AI was used to put it together in a coherent report.
+>**AI assistance note**:  > - AI assistance was used in the _editing_ of this report.  All of the content, data and history are mine; AI was used as a resource for edits.
 ---
 
 ## 0 ·  Provenance

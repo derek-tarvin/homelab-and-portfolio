@@ -2,8 +2,12 @@
 
 Tulsa, OK. Hands-on IT and security work built and documented in a self-hosted homelab. I run production Linux/VPS/DNS infrastructure and am building out a SOC-style detection and forensics lab, documented here project by project.
 
-**Certifications:** CompTIA Security+ · CompTIA A+
+I am also doing Threat Hunts and Capture the Flag (CTF) events as practice and to expand my skillset.  "After action" write-up will follow each event.
 
+**Certifications:** CompTIA Security+ · CompTIA A+
+>**AI assistance note**:  
+>- While I do believe that AI can be a wonderful _resource_, I also believe that this repo should _**reflect my own work**_.  
+>- To that end and in full transparency, I will plainly note where and how AI assistance is used.
 ## Projects
 
 | Project                      | What it demonstrates                                                          | Status         |
