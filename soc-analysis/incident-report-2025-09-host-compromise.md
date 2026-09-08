@@ -1,5 +1,6 @@
 # Incident report — production host compromise, 09/2025
 
+> - AI assistance was used in writing this Incident Report.  All of the data and history are mine; AI was used to put it together in a coherent report.
 ---
 
 ## 0 ·  Provenance
@@ -10,6 +11,7 @@ Disclosures:
 - The timeline is reconstructed from data from 3rd parties.  The dates are verified directly but parts may be withheld for privacy reasons.
 - Everything is anonymized. While the production environment is no longer active, privacy still applies.
 - The method of entry to server is suspected but never verified.
+
 
 ---
 

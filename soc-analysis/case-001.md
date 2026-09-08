@@ -1,5 +1,7 @@
 # Case 001 — Rootcheck "Trojaned Binary" Alert on `/usr/bin/md5sum`
 
+>AI assistance note:  This case study was produced using AI as an example of what could be created.
+
 > **Environment note:** This is a triage case study from a personal homelab security-monitoring environment, not a production SOC. Hosts and data are my own. The investigation was worked with AI assistance.
 
 
