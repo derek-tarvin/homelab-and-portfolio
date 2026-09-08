@@ -1,4 +1,5 @@
 # Wazuh SIEM — Two Monitored Endpoints over Separate WireGuard Tunnels
+>**AI assistance note**:  This case study was produced using AI as an exploration of what could be created using the equipment and servers available to me.  The ideas and objectives were mine while Claude was used to generate the process and help with troubleshooting.
 
 A self-hosted Wazuh SIEM with two real internet-facing Linux hosts reporting
 into it: a production VPS I operate, and a Cowrie honeypot. Both agents connect

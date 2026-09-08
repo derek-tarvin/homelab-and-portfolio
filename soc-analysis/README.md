@@ -1,4 +1,6 @@
 # SOC Analysis — Investigations & Incident Reports
+>**AI assistance note**:  This page was produced using AI.
+
 
 Written security work from two different environments. The difference between them
 changes what each document can prove, so it is stated per document rather than left

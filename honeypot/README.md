@@ -1,5 +1,5 @@
 # Cowrie Honeypot (Vesta)
-
+> **AI assistance note**:  In this case, I leaned on Claude to help me build out this setup and this document.  While spinning up a VPS is something I have done many times, this particular configuration was new.
 ## What it is
 
 As part of the homelab, a second VPS (named Vesta) was spun up on DigitalOcean to act as a honeypot — 1 vCPU, 1GB RAM, 25GB storage. Spun up 07/21/2026, running Ubuntu 26.04 with Cowrie as the actual honeypot. A Wazuh agent monitors Vesta and feeds data back to the Wazuh manager (Fornax, a VM on Proxmox) via a dedicated VPN tunnel.
